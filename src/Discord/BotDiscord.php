@@ -6,9 +6,17 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Intents;
 use Discord\WebSockets\Event;
+use Src\ChatGPT\ChatGpt;
 
 class BotDiscord
 {
+    private ChatGpt $chatGpt;
+
+    public function __construct()
+    {
+        $this->chatGpt = new ChatGpt;
+    }
+
     public function __invoke()
     {
         $discord = new Discord([
@@ -28,7 +36,13 @@ class BotDiscord
 
                 if ($message->content == 'ping') {
                     $message->reply('pong');
+
+                    return;
                 }
+
+                $message->reply(
+                    $this->chatGpt->ask($message->content)
+                );
             });
         });
 
