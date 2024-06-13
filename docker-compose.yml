@@ -12,6 +12,11 @@ services:
     working_dir: /app
     networks:
       - bot-app
+  composer:
+    image: composer:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
 networks:
   bot-app:
     driver: bridge
