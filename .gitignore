@@ -2,3 +2,4 @@
 .env
 /tmp/*
 !/tmp/.gitkeep
+/database/db.sqlite
