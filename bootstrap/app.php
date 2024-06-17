@@ -16,8 +16,7 @@ $container = $builder
     ->writeProxiesToFile(true, __DIR__ . '/../tmp/proxies')
     ->build();
 
-$entityManager = require_once __DIR__ . '/../src/Infra/Persistence/Doctrine/entity-manager.php';
-
+$entityManager = require_once __DIR__ . '/../src/Infra/Persistence/Doctrine/connection.php';
 $container->set(EntityManager::class, $entityManager);
 
 return $container;

@@ -16,4 +16,4 @@ $connection = DriverManager::getConnection(
     $config
 );
 
-return  new EntityManager($connection, $config);
+return new EntityManager($connection, $config);
