@@ -2,29 +2,41 @@
 
 namespace Infra\Bot\Discord;
 
-use Domain\Bot\Contracts\BotService as BotServiceContract;
 use Domain\ChatAI\Actions\ToAskAction;
 
-class DiscordService implements BotServiceContract
+class DiscordService
 {
+    private $message;
+
     public function __construct(private ToAskAction $toAskAction)
     {
     }
 
-    public function reply($message): void
+    public function setMessage($message): self
     {
-        if ($message->author->bot) {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function replyWithChatAI(): void
+    {
+        if ($this->isBot()) {
             return;
         }
 
-        if ($message->content == 'ping') {
-            $message->reply('pong');
-
-            return;
-        }
-
-        $message->reply(
-            ($this->toAskAction)($message->content)
+        $this->message->reply(
+            ($this->toAskAction)($this->getContent())
         );
+    }
+
+    private function isBot(): bool
+    {
+        return $this->message->author->bot;
+    }
+
+    private function getContent(): string
+    {
+        return $this->message->content;
     }
 }

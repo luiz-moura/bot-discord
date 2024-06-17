@@ -15,13 +15,19 @@ $discord = new Discord([
     'intents' => Intents::getDefaultIntents() | Intents::MESSAGE_CONTENT,
 ]);
 
-$discord->on(Event::READY, function (Discord $discord) use ($botService) {
+$discord->on('ready', function (Discord $discord) use ($botService) {
     echo "Bot is ready!", PHP_EOL;
 
-    $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($botService) {
+    $discord->on(Event::MESSAGE_CREATE, function (Message $message) use ($botService) {
         echo "{$message->author->username}: {$message->content}", PHP_EOL;
 
-        $botService->reply($message);
+        if ($message->content == 'ping') {
+            $message->reply('pong');
+
+            return;
+        }
+
+        $botService->setMessage($message)->replyWithChatAI();
     });
 });
 
