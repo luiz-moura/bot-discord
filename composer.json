@@ -13,15 +13,16 @@
     },
     "require": {
         "symfony/dotenv": "^7.1",
-        "team-reflex/discord-php": "^7.3",
-        "guzzlehttp/guzzle": "^7.8",
-        "openai-php/client": "^0.10.1",
+        "symfony/cache": "^7",
         "php-di/php-di": "^7.0",
         "doctrine/orm": "^3",
         "doctrine/dbal": "^4",
         "doctrine/annotations": "^2",
         "doctrine/migrations": "^3.7",
-        "symfony/cache": "^7"
+        "doctrine/doctrine-migrations-bundle": "*",
+        "team-reflex/discord-php": "^7.3",
+        "guzzlehttp/guzzle": "^7.8",
+        "openai-php/client": "^0.10.1"
     },
     "config": {
         "allow-plugins": {
