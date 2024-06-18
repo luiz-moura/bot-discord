@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../bootstrap/app.php';
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\DependencyFactory;
@@ -10,7 +10,7 @@ use Doctrine\Migrations\Tools\Console\Command;
 use Symfony\Component\Console\Application;
 
 $connection = DriverManager::getConnection(
-    require_once __DIR__ . '/../config/doctrine.php'
+    require __DIR__ . '/../config/doctrine.php'
 );
 
 $config = new PhpFile('config/migrations.php');

@@ -6,7 +6,7 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\Migrations\Tools\Console\Command;
 
-$entityManager = require_once __DIR__ . '/../src/Infra/Persistence/Doctrine/connection.php';
+$entityManager = require __DIR__ . '/../src/Infra/Persistence/Doctrine/connection.php';
 
 $commands = [
     new Command\DiffCommand(),
