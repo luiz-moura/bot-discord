@@ -6,7 +6,10 @@
             "Domain\\": "src/Domain/",
             "Infra\\": "src/Infra/",
             "Database\\" : "database/"
-        }
+        },
+        "files": [
+            "src/helper.php"
+        ]
     },
     "require": {
         "symfony/dotenv": "^7.1",

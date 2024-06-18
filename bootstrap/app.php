@@ -11,7 +11,7 @@ $dotenv->load(__DIR__ . '/../.env');
 
 $builder = new ContainerBuilder();
 $container = $builder
-    ->addDefinitions(require_once __DIR__ . '/../config/DI.php')
+    ->addDefinitions(config('DI'))
     ->enableCompilation(__DIR__ . '/../tmp')
     ->writeProxiesToFile(true, __DIR__ . '/../tmp/proxies')
     ->build();

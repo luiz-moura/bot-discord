@@ -6,14 +6,11 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 
-$config = ORMSetup::createAttributeMetadataConfiguration(
+$ormSetup = ORMSetup::createAttributeMetadataConfiguration(
     paths: [__DIR__.'/Entities'],
-    isDevMode: $_ENV['APP_ENV'] === 'dev',
+    isDevMode: config('app.env') === 'dev',
 );
 
-$connection = DriverManager::getConnection(
-    require_once __DIR__ . '/../../../../config/doctrine.php',
-    $config
-);
+$connection = DriverManager::getConnection(config('doctrine'), $ormSetup);
 
-return new EntityManager($connection, $config);
+return new EntityManager($connection, $ormSetup);

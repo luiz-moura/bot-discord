@@ -13,8 +13,8 @@ class ChatGptService implements ChatAIServiceContract
 
     public function __construct()
     {
-        $this->openaiClient = OpenAI::client($_ENV['CHATGPT_TOKEN']);
-        $this->model = $_ENV['CHATGPT_MODEL'];
+        $this->openaiClient = OpenAI::client(config('chatgpt.token'));
+        $this->model = config('chatgpt.model');
     }
 
     public function toAsk(string $question): string

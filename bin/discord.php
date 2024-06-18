@@ -11,7 +11,7 @@ use Infra\Bot\Discord\DiscordService;
 $botService = $container->get(DiscordService::class);
 
 $discord = new Discord([
-    'token' => $_ENV['DISCORD_TOKEN'],
+    'token' => config('discord.token'),
     'intents' => Intents::getDefaultIntents() | Intents::MESSAGE_CONTENT,
 ]);
 
