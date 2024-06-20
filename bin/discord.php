@@ -6,19 +6,19 @@ use Discord\Discord;
 use Discord\Parts\Channel\Message;
 use Discord\WebSockets\Intents;
 use Discord\WebSockets\Event;
-use Infra\Bot\Discord\DiscordService;
+use Domain\Bot\UseCases\ReplyMessageUseCase;
 
-$botService = $container->get(DiscordService::class);
+$replyMessageUseCase = $container->get(ReplyMessageUseCase::class);
 
 $discord = new Discord([
     'token' => config('discord.token'),
     'intents' => Intents::getDefaultIntents() | Intents::MESSAGE_CONTENT,
 ]);
 
-$discord->on('ready', function (Discord $discord) use ($botService) {
+$discord->on('ready', function (Discord $discord) use ($replyMessageUseCase) {
     echo "Bot is ready!", PHP_EOL;
 
-    $discord->on(Event::MESSAGE_CREATE, function (Message $message) use ($botService) {
+    $discord->on(Event::MESSAGE_CREATE, function (Message $message) use ($replyMessageUseCase) {
         echo "{$message->author->username}: {$message->content}", PHP_EOL;
 
         if ($message->content == 'ping') {
@@ -27,7 +27,7 @@ $discord->on('ready', function (Discord $discord) use ($botService) {
             return;
         }
 
-        $botService->setMessage($message)->replyWithChatAI();
+        ($replyMessageUseCase)($message);
     });
 });
 

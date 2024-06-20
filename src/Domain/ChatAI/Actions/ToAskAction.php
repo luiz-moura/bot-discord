@@ -2,16 +2,25 @@
 
 namespace Domain\ChatAI\Actions;
 
+use Domain\ChatAI\Enums\MessageRolesEnum;
 use Domain\ChatAI\Contracts\ChatAIService;
+use Domain\ChatAI\DTOs\ChatAIQuestionData;
 
 class ToAskAction
 {
-    public function __construct(private ChatAIService $chatAIService)
-    {
+    public function __construct(private ChatAIService $chatAIService) {
     }
 
-    public function __invoke(string $question): string
+    /**
+     * @param ChatAIQuestionData[] $contextMessages
+     */
+    public function __invoke(string $question, array $contextMessages = []): string
     {
-        return $this->chatAIService->toAsk(...func_get_args());
+        $question = new ChatAIQuestionData(
+            MessageRolesEnum::USER,
+            $question,
+        );
+
+        return $this->chatAIService->toAsk($question, $contextMessages);
     }
 }

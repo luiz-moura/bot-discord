@@ -3,6 +3,7 @@
 namespace Infra\ChatAI\ChatGPT;
 
 use Domain\ChatAI\Contracts\ChatAIService as ChatAIServiceContract;
+use Domain\ChatAI\DTOs\ChatAIQuestionData;
 use OpenAI;
 use OpenAI\Client;
 
@@ -17,18 +18,16 @@ class ChatGptService implements ChatAIServiceContract
         $this->model = config('chatgpt.model');
     }
 
-    public function toAsk(string $question): string
+    public function toAsk(ChatAIQuestionData $question, array $contextMessages = []): string
     {
-        $result = $this->openaiClient->chat()->create([
+        $response = $this->openaiClient->chat()->create([
             'model' => $this->model,
             'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => $question
-                ],
-            ],
+                ...$contextMessages,
+                $question
+            ]
         ]);
 
-        return $result->choices[0]->message->content;
+        return $response->choices[0]->message->content;
     }
 }

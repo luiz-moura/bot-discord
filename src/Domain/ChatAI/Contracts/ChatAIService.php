@@ -2,7 +2,12 @@
 
 namespace Domain\ChatAI\Contracts;
 
+use Domain\ChatAI\DTOs\ChatAIQuestionData;
+
 interface ChatAIService
 {
-    public function toAsk(string $question): string;
+    /**
+     * @param ChatAIQuestionData[] $contextMessages
+     */
+    public function toAsk(ChatAIQuestionData $question, array $contextMessages = []): string;
 }

@@ -2,15 +2,11 @@
 
 namespace Infra\Bot\Discord;
 
-use Domain\ChatAI\Actions\ToAskAction;
+use Domain\Bot\Contracts\BotService;
 
-class DiscordService
+class DiscordService implements BotService
 {
     private $message;
-
-    public function __construct(private ToAskAction $toAskAction)
-    {
-    }
 
     public function setMessage($message): self
     {
@@ -19,23 +15,27 @@ class DiscordService
         return $this;
     }
 
-    public function replyWithChatAI(): void
+    public function reply(string $message): void
     {
-        if ($this->isBot()) {
-            return;
-        }
-
-        $this->message->reply(
-            ($this->toAskAction)($this->getContent())
-        );
+        $this->message->reply($message);
     }
 
-    private function isBot(): bool
+    public function getUserId(): int
     {
-        return $this->message->author->bot;
+        return $this->message->author->id;
     }
 
-    private function getContent(): string
+    public function getUserName(): string
+    {
+        return $this->message->author->username;
+    }
+
+    public function isBot(): bool
+    {
+        return (bool) $this->message->author->bot;
+    }
+
+    public function getContent(): string
     {
         return $this->message->content;
     }
