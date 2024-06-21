@@ -22,15 +22,17 @@ class ReplyMessageUseCase
     ) {
     }
 
-    public function __invoke(object $message): void
+    public function __invoke(object $message, object $discord): void
     {
-        $bot = $this->botService->setMessage($message);
+        $bot = $this->botService
+            ->setMessage($message)
+            ->setBot($discord);
 
-        if ($bot->isBot()) {
+        if ($bot->messageAuthorIsBot() || $bot->botNotMentioned()) {
             return;
         }
 
-        $user = ($this->findOrCreateUserAction)($bot->getUserName(), $bot->getUserId());
+        $user = ($this->findOrCreateUserAction)($bot->getUserName(), $bot->getMessageUserId());
 
         $contextMessages = ($this->queryMessagesFromLastContextByUserIdAction)($user->id);
 
@@ -39,13 +41,13 @@ class ReplyMessageUseCase
             $message->content
         ), $contextMessages);
 
-        $aiResponse = ($this->toAskAction)($bot->getContent(), $messages);
+        $aiResponse = ($this->toAskAction)($bot->getMessageContent(), $messages);
         $contextId = $contextMessages[0]->contextId ?? null;
 
         ($this->storeMessageAction)(
             $user->id,
             MessageRolesEnum::USER,
-            $bot->getContent(),
+            $bot->getMessageContent(),
             $contextId
         );
 

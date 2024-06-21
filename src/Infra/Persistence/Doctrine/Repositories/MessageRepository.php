@@ -52,12 +52,6 @@ class MessageRepository extends EntityRepository implements MessageRepositoryCon
             ->setParameter('user_id', $userId)
             ->getResult();
 
-        var_dump(array_map(fn ($message) => new MessageData(
-            $message['message_context_id'],
-            $message['author'],
-            $message['content'],
-        ), $messages));
-
         return array_map(fn ($message) => new MessageData(
             $message['message_context_id'],
             $message['author'],

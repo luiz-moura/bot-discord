@@ -18,16 +18,10 @@ $discord = new Discord([
 $discord->on('ready', function (Discord $discord) use ($replyMessageUseCase) {
     echo "Bot is ready!", PHP_EOL;
 
-    $discord->on(Event::MESSAGE_CREATE, function (Message $message) use ($replyMessageUseCase) {
+    $discord->on(Event::MESSAGE_CREATE, function (Message $message, Discord $discord) use ($replyMessageUseCase) {
         echo "{$message->author->username}: {$message->content}", PHP_EOL;
 
-        if ($message->content == 'ping') {
-            $message->reply('pong');
-
-            return;
-        }
-
-        ($replyMessageUseCase)($message);
+        ($replyMessageUseCase)($message, $discord);
     });
 });
 
