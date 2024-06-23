@@ -4,9 +4,11 @@ namespace Domain\Bot\UseCases;
 
 use Domain\Bot\Actions\FindOrCreateUserAction;
 use Domain\Bot\Actions\QueryMessagesFromLastContextByUserIdAction;
+use Domain\Bot\Actions\RunCommandsAction;
 use Domain\Bot\Actions\StoreMessageAction;
 use Domain\Bot\Contracts\BotService;
 use Domain\Bot\DTOs\MessageData;
+use Domain\Bot\Enums\BotCommandsEnum;
 use Domain\ChatAI\Enums\MessageRolesEnum;
 use Domain\ChatAI\Actions\ToAskAction;
 use Domain\ChatAI\DTOs\ChatAIQuestionData;
@@ -18,6 +20,7 @@ class ReplyMessageUseCase
         private QueryMessagesFromLastContextByUserIdAction $queryMessagesFromLastContextByUserIdAction,
         private StoreMessageAction $storeMessageAction,
         private ToAskAction $toAskAction,
+        private RunCommandsAction $runCommandsAction,
         private BotService $botService
     ) {
     }
@@ -34,6 +37,17 @@ class ReplyMessageUseCase
 
         $user = ($this->findOrCreateUserAction)($bot->getUserName(), $bot->getMessageUserId());
 
+        var_dump($bot->getMessageContent());
+
+        $isCommand = in_array($bot->getMessageContent(), array_column(BotCommandsEnum::cases(), 'value'));
+        if ($isCommand) {
+            $message = ($this->runCommandsAction)(BotCommandsEnum::from($bot->getMessageContent()), $user->id);
+
+            $this->botService->reply($message);
+
+            return;
+        }
+
         $contextMessages = ($this->queryMessagesFromLastContextByUserIdAction)($user->id);
 
         $messages = array_map(fn (MessageData $message) => new ChatAIQuestionData(
@@ -41,7 +55,7 @@ class ReplyMessageUseCase
             $message->content
         ), $contextMessages);
 
-        $aiResponse = ($this->toAskAction)($bot->getMessageContent(), $messages);
+        $aiAnswer = ($this->toAskAction)($bot->getMessageContent(), $messages);
         $contextId = $contextMessages[0]->contextId ?? null;
 
         ($this->storeMessageAction)(
@@ -51,12 +65,12 @@ class ReplyMessageUseCase
             $contextId
         );
 
-        $this->botService->reply($aiResponse);
+        $this->botService->reply($aiAnswer);
 
         ($this->storeMessageAction)(
             $user->id,
             MessageRolesEnum::ASSISTANT,
-            $aiResponse,
+            $aiAnswer,
             $contextId
         );
     }

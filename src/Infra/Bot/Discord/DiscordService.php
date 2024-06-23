@@ -69,7 +69,7 @@ class DiscordService implements BotService
 
     private function removeBotMarketion(string $message): string
     {
-        $mentionTag = "<@!{$this->getBotId()}>";
+        $mentionTag = "<@{$this->getBotId()}> ";
 
         return str_replace($mentionTag, '', $message);
     }
