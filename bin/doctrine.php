@@ -11,7 +11,7 @@ use Doctrine\Migrations\Configuration\Migration\PhpFile;
 
 $entityManager = require __DIR__ . '/../src/Infra/Persistence/Doctrine/connection.php';
 
-$config = new PhpFile(realpath('./config/migrations.php'));
+$config = new PhpFile(realpath(__DIR__ . '/../config/migrations.php'));
 $dependencyFactory = DependencyFactory::fromEntityManager(
     $config,
     new ExistingEntityManager($entityManager)
