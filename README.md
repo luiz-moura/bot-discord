@@ -30,6 +30,19 @@
   make up
 ```
 
+### 2. Set Discord token
+https://discord.com/developers/applications
+
+Set the value in the environment variable `DISCORD_TOKEN` in .env
+
+### 3. Set ChatGpt API key
+https://beta.openai.com/account/api-keys
+
+Set the value in the environment variable `CHATGPT_TOKEN` in .env
+
+### 4. Invite the bot to your server
+https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID_HERE&permissions=1024&scope=bot
+
 ## Author
 
 * Github: [@luiz-moura](https://github.com/luiz-moura)
