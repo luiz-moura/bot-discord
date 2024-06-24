@@ -37,7 +37,9 @@ class ReplyMessageUseCase
 
         $user = ($this->findOrCreateUserAction)($bot->getUserName(), $bot->getMessageUserId());
         if ($user->isNewUser) {
-            $message =($this->runCommandsAction)(BotCommandsEnum::from($bot->getMessageContent()), $user->id);
+            $message =($this->runCommandsAction)(BotCommandsEnum::HELP, $user->id);
+
+            $this->botService->reply($message);
 
             return;
         }
