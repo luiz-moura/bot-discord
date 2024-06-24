@@ -9,10 +9,12 @@ RUN apt update && \
     supervisor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Supervisor
 RUN mkdir -p /etc/supervisor/conf.d
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# PHP Config
 COPY php.ini "${PHP_INI_DIR}/conf.d"
 
 RUN useradd -ms /bin/bash --no-user-group -u 1337 bot
