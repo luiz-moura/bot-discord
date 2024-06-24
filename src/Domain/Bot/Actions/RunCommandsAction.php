@@ -19,8 +19,10 @@ class RunCommandsAction
 
     private function listAvailableCommands(): string
     {
-        $commands = "[reset context] Começar novo contexto de conversa" . PHP_EOL;
-        $commands .= "[help] Lista comandos disponiveis" . PHP_EOL;
+        $commands = 'Greetings! These are the available commands' . PHP_EOL;
+        $commands .= '[reset context] Start new conversation context' . PHP_EOL;
+        $commands .= '[help] List available commands' . PHP_EOL;
+        $commands .= ' > Ask a question to get started! ';
 
         return $commands;
     }
@@ -29,6 +31,6 @@ class RunCommandsAction
     {
         ($this->createNewContextForUserAction)($userId);
 
-        return 'message context reset successfully!';
+        return 'Message context reset successfully!';
     }
 }

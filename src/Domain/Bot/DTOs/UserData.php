@@ -7,6 +7,7 @@ class UserData
         public int $id,
         public int $discordId,
         public string $nickname,
+        public bool $isNewUser = false,
     ) {
     }
 }

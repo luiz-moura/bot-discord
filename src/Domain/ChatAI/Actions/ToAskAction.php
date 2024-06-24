@@ -21,6 +21,13 @@ class ToAskAction
             $question,
         );
 
+        $system = new ChatAIQuestionData(
+            MessageRolesEnum::SYSTEM,
+            'Respond in up to 1500 characters.'
+        );
+
+        array_unshift($contextMessages, $system);
+
         return $this->chatAIService->toAsk($question, $contextMessages);
     }
 }

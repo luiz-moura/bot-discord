@@ -36,8 +36,11 @@ class ReplyMessageUseCase
         }
 
         $user = ($this->findOrCreateUserAction)($bot->getUserName(), $bot->getMessageUserId());
+        if ($user->isNewUser) {
+            $message =($this->runCommandsAction)(BotCommandsEnum::from($bot->getMessageContent()), $user->id);
 
-        var_dump($bot->getMessageContent());
+            return;
+        }
 
         $isCommand = in_array($bot->getMessageContent(), array_column(BotCommandsEnum::cases(), 'value'));
         if ($isCommand) {
@@ -49,7 +52,6 @@ class ReplyMessageUseCase
         }
 
         $contextMessages = ($this->queryMessagesFromLastContextByUserIdAction)($user->id);
-
         $messages = array_map(fn (MessageData $message) => new ChatAIQuestionData(
             MessageRolesEnum::from($message->author),
             $message->content

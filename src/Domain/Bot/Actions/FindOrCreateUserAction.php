@@ -16,6 +16,7 @@ class FindOrCreateUserAction
 
         if (!$user) {
             $user = $this->userRepository->create($nickname, $discordId);
+            $user->isNewUser = true;
         }
 
         return $user;
