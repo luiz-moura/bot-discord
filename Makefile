@@ -26,4 +26,4 @@ composer-install:
 
 .PHONY: migrate
 migrate:
-	docker compose run php bin/doctrine.php migrations:migrate
+	docker compose run php php bin/doctrine.php migrations:migrate
